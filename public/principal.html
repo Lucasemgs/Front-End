@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>O Ritmo do Samba</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Merriweather&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles_principal.css">
+</head>
+
+<!-- Tela de Login -->
+<div id="login-container">
+    <div id="login-box">
+        <h1>Login</h1>
+        <p class="welcome">Bem-vindo de volta! Por favor, entre com suas credenciais.</p>
+        <input type="text" id="username" placeholder="Usuário" required>
+        <input type="password" id="password" placeholder="Senha" required>
+        <button onclick="login()">Entrar</button>
+        <p class="error" id="error-message">Usuário ou senha incorretos!</p>
+        <a href="#" onclick="showRegister()">Criar conta</a>
+    </div>
+</div>
+
+<!-- Tela de Cadastro -->
+<div id="register-container" style="display: none;">
+    <div id="register-box">
+        <h1>Criar Conta</h1>
+        <p class="welcome">Preencha os campos abaixo para criar uma nova conta.</p>
+        <input type="text" id="name" placeholder="Nome Completo" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="new-password" placeholder="Senha" required>
+        <button onclick="register()">Criar Conta</button>
+        <p class="error" id="register-error-message">Ocorreu um erro ao criar a conta!</p>
+        <a href="#" onclick="showLogin()">Já tem uma conta? Faça login.</a>
+    </div>
+</div>
+
+<!-- Tela de Login -->
+<div id="login-container" class="auth-container">
+    <div id="login-box">
+        <h1>Login</h1>
+        <p class="welcome">Bem-vindo de volta! Por favor, entre com suas credenciais.</p>
+        <input type="text" id="username" placeholder="Usuário" required>
+        <input type="password" id="password" placeholder="Senha" required>
+        <button onclick="login()">Entrar</button>
+        <p class="error" id="error-message" style="display:none;">Usuário ou senha incorretos!</p>
+        <a href="#" onclick="showRegister()">Criar conta</a>
+    </div>
+</div>
+
+        <!-- Tela Principal (inicialmente oculta) -->
+        <div id="main-content">
+        <header>
+            <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+            <nav aria-label="Navegação principal">
+                <ul>
+                    <li><a href="#inicio">Início</a></li>
+                    <li><a href="#historia">História</a></li>
+                    <li><a href="#artistas">Artistas Icônicos</a></li>
+                    <li><a href="#carnaval">Samba no Carnaval</a></li>
+                    <li><a href="#escolas">Escolas de Samba</a></li>
+                    <li><a href="#influencia">Influência Internacional</a></li>
+                    <li><a href="#multimidia">Multimídia</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </nav>
+        </header>
+    
+        <div class="hero">
+            <h1>O Ritmo do Samba</h1>
+            <p>Explore a história e a magia do gênero que move o Brasil</p>
+        </div>
+    
+        <main>
+            <!-- Seções do site -->
+            <section id="historia" class="section-container">
+                <h2>História do Samba</h2>
+                <p>O samba, influenciado pela cultura africana, surgiu no início do século XX, com raízes nas rodas de dança e batuques realizados pelos negros escravizados. O samba de roda, originado na Bahia no século XIX, foi um precursor do samba urbano carioca e estava ligado a rituais religiosos. Com a abolição da escravidão, muitos negros migraram para o Rio de Janeiro, onde o samba cresceu nos terreiros, locais organizados por tias baianas que ofereciam espaço para festividades e cultos.
+    
+    No início do século XX, o samba ainda era reprimido pelas autoridades, mas as escolas de samba, surgidas na década de 1920, ajudaram a popularizar o gênero. Canções como “Pelo Telefone” de 1916 marcaram o início do samba carioca tradicional. Nos anos 1930, o samba ganhou ainda mais força com a difusão pelas rádios e foi utilizado pelo governo de Getúlio Vargas como parte da construção da identidade nacional. Contudo, durante esse processo de popularização, houve tentativas de diminuir as influências africanas no gênero, destacando-o como produto da miscigenação cultural brasileira.</p>
+            </section>
+    
+            <section id="artistas" class="section-container">
+        <h2>Artistas Icônicos do Samba</h2>
+        <div class="artista-container">
+            <div class="artista">
+                <a href="https://pt.wikipedia.org/wiki/Cartola" target="_blank">
+                    <img src="https://d3swacfcujrr1g.cloudfront.net/img/uploads/2020/06/11957_001.jpg" alt="Cartola">
+                    <h3>Cartola</h3>
+                </a>
+                <p>Cartola, um dos maiores nomes do samba, foi compositor, cantor e poeta brasileiro. Fundador da escola de samba Estação Primeira de Mangueira, suas composições são conhecidas pela elegância e profundidade lírica. Entre seus maiores sucessos estão "O Mundo é um Moinho" e "As Rosas Não Falam". Sua obra é um pilar da música popular brasileira e continua a inspirar gerações de sambistas.</p>
+            </div>
+            <div class="artista">
+                <a href="https://pt.wikipedia.org/wiki/Carmen_Miranda" target="_blank">
+                    <img src="https://www.camara.leg.br/internet/bancoimagem/banco/2013/12/img20131223191846948486.jpg" alt="Carmen Miranda">
+                    <h3>Carmen Miranda</h3>
+                </a>
+                <p>Carmen Miranda, a "Pequena Notável", foi uma cantora, atriz e dançarina luso-brasileira que conquistou fama internacional nas décadas de 1930 e 1940. Com seus trajes exuberantes e estilo carismático, popularizou a música brasileira nos Estados Unidos e no mundo, tornando-se um ícone cultural. Seu legado permanece como símbolo da brasilidade e da era de ouro do rádio.</p>
+            </div>
+            <div class="artista">
+                <a href="https://pt.wikipedia.org/wiki/Paulinho_da_Viola" target="_blank">
+                    <img src= "https://f.i.uol.com.br/fotografia/2022/11/11/1668197541636eaca5cc47d_1668197541_3x2_md.jpg" alt="Paulinho da Viola">
+                    <h3>Paulinho da Viola</h3>
+                </a>
+                <p>Paulinho da Viola é um dos grandes mestres do samba e do choro. Cantor, compositor e instrumentista, ele se destaca por sua sofisticação musical e letras que abordam o cotidiano, o amor e a tradição do samba. Ligado à escola de samba Portela, Paulinho tem uma carreira sólida e é reconhecido por sucessos como "Coração Leviano" e "Foi Um Rio que Passou em Minha Vida".</p>
+            </div>
+        </div>
+    </section>
+    
+    <body>
+     
+    
+        <main>
+            <!-- Seção do Carnaval -->
+            <section id="carnaval" class="section-container">
+                <h2>Samba no Carnaval</h2>
+                <article>
+                    <p>O samba é a alma do Carnaval brasileiro, sendo o ritmo que dá vida e emoção aos desfiles de escolas de samba e blocos carnavalescos. Surgido nos morros cariocas, o samba foi adotado pelas escolas de samba, que o transformaram em uma das manifestações culturais mais grandiosas do mundo. As escolas competem anualmente em desfiles luxuosos e coloridos, onde cada escola apresenta seu enredo por meio de alegorias, fantasias, coreografias e, claro, a batida contagiante do samba-enredo.</p>
+                    
+                    <p>Esses desfiles se tornaram um dos maiores eventos culturais do Brasil, reunindo milhares de participantes e milhões de espectadores ao redor do mundo. O samba-enredo é ensaiado ao longo do ano e sua letra conta a história do tema escolhido pela escola. O Carnaval em cidades como Rio de Janeiro e São Paulo é famoso por sua grandiosidade e atrai turistas de todo o planeta.</p>
+                </article>
+    
+                <!-- Vídeo do desfile de escolas de samba do Rio de Janeiro -->
+                <article>
+                    <h3>Assista ao Desfile de Escolas de Samba</h3>
+                    <div class="video-container">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/KwXHRTbVHtE?si=7f9wDmuUCp9M_cVx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        <p>Confira um dos desfiles de escolas de samba do Rio de Janeiro, que encantam o mundo com suas cores, criatividade e ritmo.</p>
+                    </div>
+                </article>
+    
+                <!-- Vídeo dos blocos de rua -->
+                <article>
+                    <h3>A Energia dos Blocos de Rua</h3>
+                    <div class="video-container">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/_l2Jan5nlF8?si=zQeXytPvJrjfR3Gm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        <p>Blocos de rua trazem o samba diretamente para as ruas e arrastam multidões em uma celebração vibrante e democrática.</p>
+                    </div>
+                </article>
+            </section>
+        </main>
+    
+    
+        <script src="script_principal.js"></script>
+    </body>
+
+    
+    
+            <section id="escolas" class="section-container">
+        <h2>Escolas de Samba Famosas</h2>
+        <div class="escolas-container">
+            <article class="escola">
+                <h3>
+                    <a href="https://www.mangueira.com.br" target="_blank" rel="noopener noreferrer">
+                        Estação Primeira de Mangueira
+                    </a>
+                </h3>
+                <p>Fundada em 1928, a Mangueira é uma das mais icônicas escolas de samba do Rio de Janeiro. Conhecida por suas cores verde e rosa, a escola tem uma história rica e é conhecida por sua capacidade de unir tradição e inovação. Seus sambas-enredo, como "O Mundo Encantado de Monteiro Lobato", marcaram gerações e a Mangueira coleciona diversos títulos no Carnaval carioca.</p>
+            </article>
+            
+            <article class="escola">
+                <h3>
+                    <a href="https://www.gresportela.com.br" target="_blank" rel="noopener noreferrer">
+                        Portela
+                    </a>
+                </h3>
+                <p>A Portela, uma das mais antigas escolas de samba do Brasil, carrega a tradição desde 1923. Com sua famosa águia como símbolo, a escola é reconhecida por suas apresentações elegantes e seus sambas inesquecíveis. Com 22 títulos de campeã, a Portela é a escola com o maior número de vitórias no Carnaval carioca, sendo uma verdadeira referência em história e cultura.</p>
+            </article>
+            
+            <article class="escola">
+                <h3>
+                    <a href="https://www.beija-flor.com.br" target="_blank" rel="noopener noreferrer">
+                        Beija-Flor de Nilópolis
+                    </a>
+                </h3>
+                <p>A Beija-Flor é sinônimo de grandiosidade e criatividade. Fundada em 1948, a escola se destaca por seus enredos que abordam questões sociais e políticas com originalidade e impacto visual. Seu desfile de 1989, "Ratos e Urubus, Larguem Minha Fantasia", entrou para a história do Carnaval brasileiro como um dos mais ousados e memoráveis de todos os tempos.</p>
+            </article>
+        </div>
+              
+    </section>
+    
+    <section id="influencia" class="section-container">
+        <h2>Influência Internacional do Samba</h2>
+        <article>
+            <p>O samba, mais do que uma expressão cultural brasileira, conquistou o mundo, inspirando músicos, coreógrafos e artistas de várias nações. Desde suas raízes no Brasil, o ritmo se espalhou por festivais, casas de shows e palcos internacionais, criando um legado global.</p>
+            <p>Ícones da música mundial, como Paul Simon e Sérgio Mendes, incorporaram elementos do samba em suas composições, ajudando a popularizar o gênero fora do Brasil. O samba também influenciou estilos como a bossa nova, que ganhou notoriedade mundial nos anos 60 e até hoje é uma referência musical global.</p>
+        </article>
+        
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/StEEXRYLRAI?si=khtKrPr0cpE6oesB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    
+        <div class="image-gallery">
+            <figure>
+                <img src="https://www.londonschoolofsamba.co.uk/wp-content/uploads/elementor/thumbs/Carnival-2023-5-The-front-band-with-guitars-and-singers-qnr9edcmy2adahdoa7bg5esobnj18ze6anftkhsj58.jpeg" alt="Festival de Samba em Londres">
+                <figcaption>Festival de Samba em Londres, 2023.</figcaption>
+            </figure>
+            <figure>
+                <img width="447" height="208" src="https://ritmocarioca.com.br/wp-content/uploads/2023/04/Class-15.jpg">
+                <figcaption>Grupo de Samba nos Estados Unidos, promovendo a cultura brasileira.</figcaption>
+            </figure>
+        </div>
+    </section>
+    
+    <section id="multimidia" class="section-container">
+        <h2>Multimídia</h2>
+        <div class="media-gallery">
+            <div class="media-item">
+                <h3>Vídeo sobre o Samba</h3>
+                <iframe width="530" height="298" src="https://www.youtube.com/embed/068cfxUvP8s?si=vTMuyYx_6zlyNO4Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <div class="media-item">
+                <h3>Ouça um clássico do Samba</h3>
+                <audio controls>
+                    <source src="https://s3-sa-east-1.amazonaws.com/nexojornal/www/20160815_ESP_100anosSamba/samba0.mp3" type="audio/mpeg">
+                    Seu navegador não suporta áudio.
+                </audio>
+            </div>
+        </div>
+    </section>
+    
+    
+    
+            <section id="contato" class="section-container">
+                <h2>Contato</h2>
+                <form>
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" required aria-required="true">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required aria-required="true">
+                    <label for="mensagem">Mensagem:</label>
+                    <textarea id="mensagem" name="mensagem" required aria-required="true"></textarea>
+                    <input type="submit" value="Enviar">
+                </form>
+            </section>
+        </main>
+    
+        <footer>
+            <nav>
+                <ul>
+                    <li><a href="#inicio">Início</a></li>
+                    <li><a href="#historia">História</a></li>
+                    <li><a href="#artistas">Artistas</a></li>
+                    <li><a href="#multimidia">Multimídia</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </nav>
+            <p>&copy; 2024 O Ritmo do Samba. Todos os direitos reservados.</p>
+        </footer>    
+    </body>
+    </html>
