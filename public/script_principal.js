@@ -1,21 +1,22 @@
-function login() {
-    // Aqui você pode adicionar a lógica de autenticação
-    // Se o login for bem-sucedido:
-    document.getElementById('login-container').style.display = 'none';
-    document.getElementById('main-content').style.display = 'block';
-    document.body.classList.remove('no-scroll');
-}
-
 // Inicialmente, desabilite a rolagem
 document.body.classList.add('no-scroll');
-document.getElementById('main-content').style.display = 'none';
-    // Função de login
-    function login() {
-        var username = document.getElementById('username').value;
-        var password = document.getElementById('password').value;
 
-        // Verifica se o login é válido
-        if (username === "admin" && password === "admin") {
+async function login() {
+    // Captura os valores do formulário
+    const Email = document.getElementById('Email').value;
+    const Senha = document.getElementById('Senha').value;
+
+    try {
+        // Faz a requisição para a rota de login
+        const response = await fetch('http://localhost:5000/login', { // ajuste conforme a URL correta do seu servidor
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ Email, Senha }), // Envia os dados como JSON
+        });
+
+        // Verifica a resposta do servidor
+        if (response.ok) {
+            const user = await response.json();
             // Esconde a tela de login e mostra a tela principal
             document.getElementById('login-container').style.display = 'none';
             document.getElementById('main-content').style.display = 'block';
@@ -24,8 +25,8 @@ document.getElementById('main-content').style.display = 'none';
             // Exibe mensagem de erro
             document.getElementById('error-message').style.display = 'block';
         }
-        function toggleMenu() {
-      const menu = document.querySelector('nav ul');
-      menu.classList.toggle('active');
-  }
+    } catch (err) {
+        console.log('Erro:', err);
+        document.getElementById('error-message').style.display = 'block';
     }
+}

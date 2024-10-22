@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="styles_adm.css">
+</head>
+<body>
+    <div class="container">
+      <header>
+        <h1>Admin - Gerenciamento de Usuários</h1>
+        <button onclick="location.href='principal.html'" class="btn btn-secondary" style="position: absolute; top: 15px; right: 15px;">Voltar para Login</button>
+    </header>
+
+        <!-- Formulário de Criação de Novo Usuário -->
+        <section class="user-form">
+            <h2>Criar Novo Usuário</h2>
+            <form id="createUserForm">
+                <div class="form-group">
+                    <label for="name">Nome:</label>
+                    <input type="text" id="Nome" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="Email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="role">Cargo:</label>
+                    <select id="Cargo" name="role">
+                        <option value="usuario">Usuário</option>
+                        <option value="admin">Administrador</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="Senha" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Criar Usuário</button>
+            </form>
+        </section>
+
+        <!-- Formulário de Edição de Usuário -->
+        <section class="user-form" id="editUserFormContainer" style="display: none;">
+            <h2>Editar Usuário</h2>
+            <form id="editUserForm">
+                <div class="form-group">
+                    <label for="editNome">Nome:</label>
+                    <input type="text" id="editNome" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="editEmail">Email:</label>
+                    <input type="email" id="editEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="editCargo">Cargo:</label>
+                    <select id="editCargo" name="role">
+                        <option value="usuario">Usuário</option>
+                        <option value="admin">Administrador</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            </form>
+        </section>
+
+        <!-- Tabela de Usuários Existentes -->
+        <section class="user-list">
+            <h2>Usuários Existentes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Cargo</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="userTable">
+                    <!-- Linhas de usuários serão geradas dinamicamente -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000'; // Base da URL da API
+        let currentUserId = null; // Armazena o ID do usuário em edição
+  
+        // Função para carregar usuários
+        async function loadUsers() {
+            try {
+                const response = await fetch(`${API_URL}/busca`); // Rota correta para buscar usuários
+                const users = await response.json();
+                const userTable = document.getElementById('userTable');
+                userTable.innerHTML = ''; // Limpa a tabela antes de popular
+                
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.Nome}</td>
+                        <td>${user.Email}</td>
+                        <td>${user.Cargo}</td>
+                        <td>
+                            <button onclick="editUser(${user.id}, '${user.Nome}', '${user.Email}', '${user.Cargo}')">Editar</button>
+                            <button onclick="deleteUser(${user.id})">Excluir</button>
+                        </td>
+                    `;
+                    userTable.appendChild(row);
+                });
+            } catch (error) {
+                console.log('Erro ao carregar usuários:', error);
+            }
+        }
+  
+        // Função para deletar usuário
+        async function deleteUser(id) {
+            try {
+                const response = await fetch(`${API_URL}/delete/${id}`, {
+                    method: 'DELETE' // Rota correta para deletar o usuário
+                });
+  
+                if (response.ok) {
+                    alert('Usuário excluído com sucesso');
+                    loadUsers(); // Recarrega os usuários
+                } else {
+                    alert('Erro ao excluir usuário');
+                }
+            } catch (error) {
+                console.log('Erro ao excluir usuário:', error);
+            }
+        }
+  
+        // Função para preencher o formulário de edição com os dados do usuário
+        function editUser(id, nome, email, cargo) {
+            currentUserId = id; // Armazena o ID do usuário em edição
+            document.getElementById('editNome').value = nome;
+            document.getElementById('editEmail').value = email;
+            document.getElementById('editCargo').value = cargo;
+
+            // Mostra o formulário de edição
+            document.getElementById('editUserFormContainer').style.display = 'block';
+        }
+  
+        // Carrega os usuários ao carregar a página
+        window.onload = loadUsers;
+  
+        // Formulário de criação de usuário
+        document.getElementById('createUserForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Previne o envio padrão do formulário
+  
+            // Captura os valores do formulário
+            const Nome = document.getElementById('Nome').value;
+            const Email = document.getElementById('Email').value;
+            const Senha = document.getElementById('Senha').value;
+            const Cargo = document.getElementById('Cargo').value;
+  
+            // Monta o objeto com os dados do formulário
+            const data = { Nome: Nome, Email: Email, Senha: Senha, Cargo: Cargo };
+  
+            try {
+                // Faz a requisição para o servidor
+                const response = await fetch(`${API_URL}/create`, { // Rota correta para criar usuário
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data), // Envia os dados como JSON
+                });
+  
+                // Verifica se a requisição foi bem-sucedida
+                if (response.ok) {
+                    alert('Usuário criado com sucesso');
+                    loadUsers(); // Recarrega os usuários
+                } else {
+                    alert('Erro ao criar usuário');
+                }
+            } catch (error) {
+                console.log('Erro ao criar usuário:', error);
+            }
+        });
+
+        // Formulário de edição de usuário
+        document.getElementById('editUserForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Previne o envio padrão do formulário
+
+            // Captura os valores do formulário
+            const Nome = document.getElementById('editNome').value;
+            const Email = document.getElementById('editEmail').value;
+            const Cargo = document.getElementById('editCargo').value;
+
+            // Monta o objeto com os dados do formulário
+            const data = { Nome: Nome, Email: Email, Cargo: Cargo };
+
+            try {
+                // Faz a requisição para o servidor para atualizar o usuário
+                const response = await fetch(`${API_URL}/edit/${currentUserId}`, { // Rota correta para editar usuário
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data), // Envia os dados como JSON
+                });
+
+                // Verifica se a requisição foi bem-sucedida
+                if (response.ok) {
+                    alert('Usuário atualizado com sucesso');
+                    loadUsers(); // Recarrega os usuários
+                    document.getElementById('editUserFormContainer').style.display = 'none'; // Esconde o formulário de edição
+                } else {
+                    alert('Erro ao atualizar usuário');
+                }
+            } catch (error) {
+                console.log('Erro ao atualizar usuário:', error);
+            }
+        });
+  </script>
+</body>
+</html>
