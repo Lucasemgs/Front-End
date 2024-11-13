@@ -41,6 +41,7 @@
                     <li><a href="#escolas">Escolas de Samba</a></li>
                     <li><a href="#influencia">Influência Internacional</a></li>
                     <li><a href="#multimidia">Multimídia</a></li>
+                    <li><a href="#blog">Blog</a></li>
                     <li><a href="#contato">Contato</a></li>
                 </ul>
             </nav>
@@ -118,10 +119,16 @@
                     </div>
                 </article>
             </section>
+
         </main>
     
     
         <script>
+
+            // Função para mostrar o formulário de criação de post
+    function showCreatePostForm() {
+        document.getElementById('create-post-form').style.display = 'block';
+    }
             // Inicialmente, desabilite a rolagem
             document.body.classList.add('no-scroll');
             
@@ -238,6 +245,21 @@
         </div>
     </section>
     
+                <!-- Seção do Blog -->
+                <section id="blog" class="section-container">
+                    <h2>Blog</h2>
+                    <div id="post-list">
+                        <!-- Posts serão carregados aqui via JavaScript -->
+                    </div>
+                    <button onclick="showCreatePostForm()">Criar Novo Post</button>
+                    
+                    <div id="create-post-form" style="display:none;">
+                        <h3>Criar Post</h3>
+                        <input type="text" id="post-title" placeholder="Título do Post">
+                        <textarea id="post-content" placeholder="Conteúdo do Post"></textarea>
+                        <button onclick="createPost()">Publicar</button>
+                    </div>
+                </section>
     
     
             <section id="contato" class="section-container">
@@ -262,6 +284,7 @@
                     <li><a href="#artistas">Artistas</a></li>
                     <li><a href="#multimidia">Multimídia</a></li>
                     <li><a href="#contato">Contato</a></li>
+                    <li><a href="#blog">Blog</a></li>
                 </ul>
             </nav>
             <p>&copy; 2024 O Ritmo do Samba. Todos os direitos reservados.</p>

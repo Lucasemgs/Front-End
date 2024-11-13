@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>O Ritmo do Samba</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Merriweather&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles_principal.css">
+</head>
+
+<body>
+    <script>
+        // Função para redirecionar para a página principal
+        function showRegister() {
+            window.location.href = "para_usuario.html"; // Caminho do HTML de login
+        }
+    </script>
+    
+    <!-- Tela de Login -->
+    <div id="login-container">
+        <div id="login-box">
+            <h1>Login</h1>
+            <p class="welcome">Bem-vindo de volta! Por favor, entre com suas credenciais.</p>
+            <input type="text" id="Email" placeholder="E-mail" required>
+            <input type="password" id="Senha" placeholder="Senha" required>
+            <button onclick="login()">Entrar</button>
+            <p class="error" id="error-message" style="display: none;">Usuário ou senha incorretos!</p>
+            <a href="#" onclick="showRegister()">Criar conta</a>
+        </div>
+    </div>
+    
+    <!-- Tela Principal (inicialmente oculta) -->
+    <div id="main-content" style="display: none;">
+        <header>
+            <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+            <nav aria-label="Navegação principal">
+                <ul>
+                    <li><a href="#inicio">Início</a></li>
+                    <li><a href="#historia">História</a></li>
+                    <li><a href="#artistas">Artistas Icônicos</a></li>
+                    <li><a href="#carnaval">Samba no Carnaval</a></li>
+                    <li><a href="#escolas">Escolas de Samba</a></li>
+                    <li><a href="#influencia">Influência Internacional</a></li>
+                    <li><a href="#multimidia">Multimídia</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                </ul>
+            </nav>
+        </header>
+    
+        <div class="hero">
+            <h1>O Ritmo do Samba</h1>
+            <p>Explore a história e a magia do gênero que move o Brasil</p>
+        </div>
+    
+        <main>
+            <!-- Seções do site (historia, artistas, carnaval, escolas, influencia, multimidia, contato) -->
+
+            <!-- Seção do Blog -->
+            <section id="blog" class="section-container">
+                <h2>Blog</h2>
+                <div id="post-list">
+                    <!-- Posts serão carregados aqui via JavaScript -->
+                </div>
+                <button onclick="showCreatePostForm()">Criar Novo Post</button>
+                
+                <div id="create-post-form" style="display:none;">
+                    <h3>Criar Post</h3>
+                    <input type="text" id="post-title" placeholder="Título do Post" required>
+                    <textarea id="post-content" placeholder="Conteúdo do Post" required></textarea>
+                    <button onclick="createPost()">Publicar</button>
+                </div>
+            </section>
+        </main>
+    
+        <footer>
+            <nav>
+                <ul>
+                    <li><a href="#inicio">Início</a></li>
+                    <li><a href="#historia">História</a></li>
+                    <li><a href="#artistas">Artistas</a></li>
+                    <li><a href="#multimidia">Multimídia</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </nav>
+            <p>&copy; 2024 O Ritmo do Samba. Todos os direitos reservados.</p>
+        </footer>    
+    </div>
+
+    <script>
+        // Inicialmente, desabilite a rolagem
+        document.body.classList.add('no-scroll');
+        
+        // Função para mostrar o formulário de criação de post
+        function showCreatePostForm() {
+            document.getElementById('create-post-form').style.display = 'block';
+        }
+
+        // Função para esconder o formulário de criação de post
+        function hideCreatePostForm() {
+            document.getElementById('create-post-form').style.display = 'none';
+        }
+
+        // Função para realizar o login
+        async function login() {
+            const Email = document.getElementById('Email').value;
+            const Senha = document.getElementById('Senha').value;
+    
+            try {
+                const response = await fetch('http://localhost:5000/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ Email, Senha }),
+                });
+    
+                if (response.ok) {
+                    const user = await response.json();
+                    
+                    // Armazena o token no localStorage para autenticação futura
+                    localStorage.setItem('token', user.token);
+    
+                    // Verifica o cargo do usuário
+                    if (user.Cargo === 'admin') {
+                        window.location.href = "adm.html";
+                    } else {
+                        document.getElementById('login-container').style.display = 'none';
+                        document.getElementById('main-content').style.display = 'block';
+                        document.body.classList.remove('no-scroll');
+                        loadPosts(); // Carrega os posts após o login
+                    }
+                } else {
+                    document.getElementById('error-message').style.display = 'block';
+                }
+            } catch (err) {
+                console.log('Erro:', err);
+                document.getElementById('error-message').style.display = 'block';
+            }
+        }
+
+        // Função para carregar os posts do blog
+        async function loadPosts() {
+            try {
+                const response = await fetch('http://localhost:5000/blog/posts', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                if (response.ok) {
+                    const posts = await response.json();
+                    const postList = document.getElementById('post-list');
+                    postList.innerHTML = posts.map(post => `
+                        <div class="post">
+                            <h3>${post.title}</h3>
+                            <p>${post.content}</p>
+                            <p>Por: ${post.User.Nome}</p>
+                            <button onclick="likePost(${post.id})">Curtir (${post.likes})</button>
+                            <button onclick="showEditForm(${post.id})">Editar</button>
+                            <button onclick="deletePost(${post.id})">Apagar</button>
+                            <div class="comments">
+                                <h4>Comentários</h4>
+                                <div id="comments-${post.id}">
+                                    ${post.Comments.map(comment => `
+                                        <p><strong>${comment.User.Nome}:</strong> ${comment.content}</p>
+                                    `).join('')}
+                                </div>
+                                <input type="text" id="comment-input-${post.id}" placeholder="Escreva um comentário">
+                                <button onclick="commentPost(${post.id})">Comentar</button>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    console.error('Erro ao carregar posts');
+                }
+            } catch (err) {
+                console.log('Erro ao carregar posts:', err);
+            }
+        }
+
+        // Função para criar um novo post
+        async function createPost() {
+            const title = document.getElementById('post-title').value;
+            const content = document.getElementById('post-content').value;
+    
+            if (!title || !content) {
+                alert('Título e conteúdo são obrigatórios.');
+                return;
+            }
+    
+            try {
+                const response = await fetch('http://localhost:5000/blog/posts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ title, content })
+                });
+                if (response.ok) {
+                    loadPosts();
+                    document.getElementById('post-title').value = '';
+                    document.getElementById('post-content').value = '';
+                    hideCreatePostForm();
+                } else {
+                    console.error('Erro ao criar post');
+                }
+            } catch (err) {
+                console.log('Erro ao criar post:', err);
+            }
+        }
+
+        // Função para curtir um post
+        async function likePost(postId) {
+            try {
+                const response = await fetch(`http://localhost:5000/blog/posts/${postId}/like`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                if (response.ok) {
+                    loadPosts();
+                } else {
+                    console.error('Erro ao curtir post');
+                }
+            } catch (err) {
+                console.log('Erro ao curtir post:', err);
+            }
+        }
+
+        // Função para comentar em um post
+        async function commentPost(postId) {
+            const commentInput = document.getElementById(`comment-input-${postId}`);
+            const content = commentInput.value;
+    
+            if (!content) {
+                alert('Comentário não pode ser vazio.');
+                return;
+            }
+    
+            try {
+                const response = await fetch(`http://localhost:5000/blog/posts/${postId}/comments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ content })
+                });
+                if (response.ok) {
+                    loadPosts();
+                } else {
+                    console.error('Erro ao comentar no post');
+                }
+            } catch (err) {
+                console.log('Erro ao comentar no post:', err);
+            }
+        }
+
+        // Função para mostrar o formulário de edição de post
+        function showEditForm(postId) {
+            // Implementar se necessário
+            alert('Função de edição ainda não implementada.');
+        }
+
+        // Função para apagar um post
+        async function deletePost(postId) {
+            if (!confirm('Tem certeza que deseja apagar este post?')) return;
+    
+            try {
+                const response = await fetch(`http://localhost:5000/blog/posts/${postId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                if (response.ok) {
+                    loadPosts();
+                } else {
+                    console.error('Erro ao apagar post');
+                }
+            } catch (err) {
+                console.log('Erro ao apagar post:', err);
+            }
+        }
+    </script>
+</body>
+</html>
