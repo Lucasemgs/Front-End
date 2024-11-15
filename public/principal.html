@@ -259,7 +259,98 @@
                         <textarea id="post-content" placeholder="Conteúdo do Post"></textarea>
                         <button onclick="createPost()">Publicar</button>
                     </div>
-                </section>
+                    <input type="text" id="comment-input-${post.id}" placeholder="Adicione um comentário">
+                    <button onclick="addComment(${post.id})">Comentar</button>
+                </div>
+                <button onclick="editPost(${post.id})">Editar</button>
+                <button onclick="deletePost(${post.id})">Excluir</button>
+            `;
+            
+            postList.appendChild(postElement);
+        });
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+        
+        async function likePost(id) {
+            await fetch(`http://localhost:5000/postRoute/${id}/like`, { method: 'POST' });
+            loadPosts();
+        }
+        
+        async function addComment(postId) {
+            const conteudo = document.getElementById(`comment-input-${postId}`).value;
+            const autor = "Usuário";  // Pode ser substituído com o nome do usuário logado
+            
+            await fetch(`http://localhost:5000/postRoute/${postId}/comentarios`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ conteudo, autor })
+            });
+            
+            loadPosts();
+        }
+        
+        async function editPost(id) {
+            const titulo = prompt("Novo título do post:");
+            const conteudo = prompt("Novo conteúdo do post:");
+            
+            if (titulo && conteudo) {
+                await fetch(`http://localhost:5000/postRoute/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ titulo, conteudo })
+                });
+                
+                loadPosts();
+            }
+        }
+        
+        async function deletePost(id) {
+            const response = confirm("Tem certeza de que deseja excluir este post?");
+            if (response) {
+                await fetch(`http://localhost:5000/postRoute/${id}`, { method: 'DELETE' });
+                loadPosts();
+            }
+        }
+        
+        function showCreatePostForm() {
+            document.getElementById('create-post-form').style.display = 'block';
+        }
+        
+        async function createPost() {
+            const titulo = document.getElementById('post-title').value;
+            const conteudo = document.getElementById('post-content').value;
+            const autor = "Usuário";  // Pode ser substituído com o nome do usuário logado
+            
+            await fetch('http://localhost:5000/postRoute', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ titulo, conteudo, autor })
+            });
+            
+            loadPosts();
+            document.getElementById('create-post-form').style.display = 'none';
+        }
+        
+        window.onload = function() {
+            loadPosts();
+        };
+        </script>
+        
+    <script>
+        let currentScrollIndex = 0;
+const postsPerPage = 5;
+
+function scrollCarousel(direction) {
+    const postList = document.getElementById('post-list');
+    const postWidth = postList.children[0].offsetWidth + 20; // Largura + gap
+    const maxScrollIndex = Math.ceil(postList.children.length / postsPerPage) - 1;
+
+    currentScrollIndex = Math.min(Math.max(currentScrollIndex + direction, 0), maxScrollIndex);
+    postList.style.transform = `translateX(-${currentScrollIndex * postWidth * postsPerPage}px)`;
+}
+    </script>
     
     
             <section id="contato" class="section-container">
